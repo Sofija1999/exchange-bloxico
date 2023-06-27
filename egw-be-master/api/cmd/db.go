@@ -1,8 +1,8 @@
 package cmd
 
 import (
-	egw "github.com/Bloxico/exchange-gateway/internal/app"
-	"github.com/Bloxico/exchange-gateway/internal/database"
+	egw "github.com/Bloxico/exchange-gateway/sofija/app"
+	"github.com/Bloxico/exchange-gateway/sofija/database"
 	"github.com/pkg/errors"
 	"github.com/urfave/cli"
 )

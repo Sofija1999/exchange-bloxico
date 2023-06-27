@@ -3,10 +3,9 @@ package main
 
 import (
 	"fmt"
-
-	"github.com/Bloxico/exchange-gateway/internal/app"
-	"github.com/Bloxico/exchange-gateway/internal/config"
-	"github.com/Bloxico/exchange-gateway/internal/server"
+	"github.com/Bloxico/exchange-gateway/sofija/app"
+	"github.com/Bloxico/exchange-gateway/sofija/config"
+	"github.com/Bloxico/exchange-gateway/sofija/server"
 	"github.com/pkg/errors"
 )
 

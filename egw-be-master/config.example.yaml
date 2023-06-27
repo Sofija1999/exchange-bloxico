@@ -6,11 +6,11 @@ http:
 base_domain: http://localhost
 
 db:
-  name: pgw
+  name: egw_db
   schema: pgw
   host: localhost
   port: 5432
-  user: pgw_db_user
-  pass: pass
+  user: egw_db_user
+  pass: egw_db_pass
 
 version: 0.0.1

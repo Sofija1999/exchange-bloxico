@@ -6,7 +6,7 @@ import (
 	"os"
 
 	"github.com/Bloxico/exchange-gateway/api/cmd"
-	"github.com/Bloxico/exchange-gateway/internal/app"
+	"github.com/Bloxico/exchange-gateway/sofija/app"
 	"github.com/urfave/cli"
 )
 
