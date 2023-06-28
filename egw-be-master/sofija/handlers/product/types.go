@@ -13,6 +13,10 @@ type InsertResponseData struct {
 
 type UpdateRequestData struct {
 	ShortDescription string
-	Description string
-	Price int64
+	Description      string
+	Price            int64
+}
+
+type UpdateResponseData struct {
+	Product EgwProductModel
 }

@@ -43,5 +43,6 @@ func (e *EgwProductModel) ToDomain() *domain.EgwProduct {
 		Description:         e.Description,
 		Price:      e.Price,
 		CreatedAt: e.CreatedAt,
+		UpdatedAt: e.UpdatedAt,
 	}
 }

@@ -8,8 +8,6 @@ import (
 	"github.com/Bloxico/exchange-gateway/sofija/core/ports"
 	"github.com/emicklei/go-restful/v3"
 	"errors"
-	//"github.com/gorilla/mux"
-	//"strconv"
 	//"log"
 )
 
@@ -74,58 +72,76 @@ func (e *EgwProductHttpHandler) insertProduct(ctx context.Context, egwProduct *E
 }
 
 func (e *EgwProductHttpHandler) UpdateProduct(req *restful.Request, resp *restful.Response) {
-	/*
+	
 	var a UpdateRequestData
 	req.ReadEntity(&a)
 
-	// get product ID for update query
-	params := mux.Vars(req)
-	id, err := strconv.Atoi(params["id"])
+	productID := req.PathParameter("id")
+
+	existingProduct, err := e.productSvc.FindByID(req.Request.Context(), productID)
 	if err != nil {
-		log.Fatalf("Unable to convert string int %v", err)
-	}
-	reqId, err := params.StringFrom(req.Request, auth.USER_ID_CTX_KEY)
-	if err != nil || len(reqId) == 0 {
-		resp.WriteError(http.StatusBadRequest, errors.New("no id found for product"))
+		resp.WriteError(http.StatusInternalServerError, errors.New("failed to retrieve product"))
 		return
 	}
 
-	ctx := req.Request.Context()
-	dataProduct := &domain.EgwProduct{ID: id, Name: a.Name, ShortDescription: a.ShortDescription, Description: a.Description, Price: a.Price}
+	existingProduct.ShortDescription = a.ShortDescription
+	existingProduct.Description = a.Description
+	existingProduct.Price = a.Price
 
-	err = e.productSvc.Update(ctx, dataProduct)
+	var egwProduct *EgwProductModel = &EgwProductModel{}
+	egwProduct.ID = existingProduct.ID
+	egwProduct.Name = existingProduct.Name
+	egwProduct.ShortDescription = existingProduct.ShortDescription
+	egwProduct.Description = existingProduct.Description
+	egwProduct.Price = existingProduct.Price
+	egwProduct.CreatedAt = existingProduct.CreatedAt
+	egwProduct.UpdatedAt = existingProduct.UpdatedAt
+
+	err = e.updateProduct(req.Request.Context(), egwProduct)
 	if err != nil {
-		resp.WriteError(http.StatusInternalServerError, errors.New("error updating product"))
+		resp.WriteError(http.StatusInternalServerError, errors.New("failed to update product"))
 		return
 	}
 
 	// return updated product as data
-	var retProduct *EgwProductModel = &EgwProductModel{}
-	retProduct.FromDomain(dataProduct)
-	resp.WriteAsJson(retProduct)*/
+	respData := UpdateResponseData{Product: *egwProduct}
+	resp.WriteAsJson(respData)
 }
 
-// DeleteProduct performs the deletion of a product by ID.
-/*func (e *EgwProductHttpHandler) DeleteProduct(req *restful.Request, resp *restful.Response) {
-	// Extract the product ID from the request path or query parameters, assuming the ID is provided.
+func (e *EgwProductHttpHandler) updateProduct(ctx context.Context, egwProduct *EgwProductModel) error {
+	err := e.productSvc.Update(ctx, egwProduct.ToDomain())
+	if err != nil {
+		return err
+	}
+	// Optionally retrieve the updated product data from the DB to populate it further, if needed
+	updatedProductData, err := e.productSvc.FindByID(ctx, egwProduct.ID)
+	if err != nil {
+		return err
+	}
+	egwProduct.FromDomain(updatedProductData)
+	return nil
+}
+
+
+func (e *EgwProductHttpHandler) DeleteProduct(req *restful.Request, resp *restful.Response) {
+	// Retrieve the product ID from the URL path
 	productID := req.PathParameter("id")
 
-	// Perform the deletion of the product with the given ID.
+	// Delete the product from the database
 	err := e.deleteProduct(req.Request.Context(), productID)
 	if err != nil {
-		resp.WriteError(http.StatusInternalServerError, errors.New("error deleting product"))
+		resp.WriteError(http.StatusInternalServerError, errors.New("failed to delete product"))
 		return
 	}
 
-	// Return a success response.
+	resp.WriteHeader(http.StatusOK)
 	resp.Write([]byte("Product deleted successfully"))
-}*/
+}
 
-/*func (e *EgwProductHttpHandler) deleteProduct(ctx context.Context, productID string) error {
-	// Perform the deletion of the product with the given ID using the appropriate service method.
-	err := e.productSvc.DeleteProduct(ctx, productID)
+func (e *EgwProductHttpHandler) deleteProduct(ctx context.Context, productID string) error {
+	err := e.productSvc.Delete(ctx, productID)
 	if err != nil {
 		return err
 	}
 	return nil
-}*/
+}

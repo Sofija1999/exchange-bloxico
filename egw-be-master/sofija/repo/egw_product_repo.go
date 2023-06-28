@@ -54,6 +54,15 @@ func (repo *EgwProductRepository) Update(ctx context.Context, EgwProduct *domain
 	return nil
 }
 
+func (repo *EgwProductRepository) Delete(ctx context.Context, productID string) error {
+	_, err := repo.db.Exec(ctx, "DELETE FROM egw.product WHERE id = $1", productID)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func (repo *EgwProductRepository) FindByID(ctx context.Context, id string) (*domain.EgwProduct, error) {
 	var EgwProduct domain.EgwProduct
 

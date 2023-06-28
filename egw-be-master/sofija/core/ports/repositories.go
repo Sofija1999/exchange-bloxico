@@ -17,5 +17,5 @@ type EgwProductRepo interface {
 	Insert(ctx context.Context, product *domain.EgwProduct) error
 	Update(ctx context.Context, product *domain.EgwProduct) error
 	FindByID(ctx context.Context, id string) (*domain.EgwProduct, error)
-	//Delete(ctx context.Context, product *domain.EgwProduct) error
+	Delete(ctx context.Context, id string) error
 }

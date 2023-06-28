@@ -47,10 +47,10 @@ func (s *EgwProductService) Update(ctx context.Context, egwProduct *domain.EgwPr
 	return nil
 }
 
-/*func (s *EgwProductService) Delete(ctx context.Context, egwProduct *domain.EgwProduct) error {
-	err := s.productRepo.Delete(ctx, egwProduct)
+func (s *EgwProductService) Delete(ctx context.Context, id string) error {
+	err := s.productRepo.Delete(ctx, id)
 	if err != nil {
 		return err
 	}
 	return nil
-}*/
+}

@@ -17,5 +17,5 @@ type EgwProductUsecase interface {
 	InsertProduct(ctx context.Context, product *domain.EgwProduct) error
 	FindByID(ctx context.Context, id string) (*domain.EgwProduct, error)
 	Update(ctx context.Context, EgwProduct *domain.EgwProduct) error
-	//Delete(ctx context.Context, EgwProduct *domain.EgwProduct) error
+	Delete(ctx context.Context, id string) error
 }
